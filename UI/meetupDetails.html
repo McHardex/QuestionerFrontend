@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Questioner</title>
+  <link rel="stylesheet" type="text/css" href="./assets/stylesheets/meetupDetails.css">
+  <link href="https://fonts.googleapis.com/css?family=Montserrat:100" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Montserrat:200" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Montserrat:300" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Montserrat:400" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Montserrat:500" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Montserrat:600" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Montserrat:700" rel="stylesheet">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
+</head>
+<body>
+  <div class='m-details-cont'>
+    <header>
+      <div class="questioner-logo">
+        <a href="./meetups.html"><img src="./assets/images/logoi.png" alt="questioner-logo"/></a>
+        <span>QUESTIONER</span>
+      </div>
+      <div class="user">
+        <i class="fas fa-user-cog"></i>
+        <span id="user"></span>
+        <div class="dropdown-content">
+          <a href="profile.html">Profile</a>
+          <a href="meetups.html">Meetup</a>
+          <a class="cte-meetup">Admin</a>
+          <a href="" id="logout">logout</a>
+        </div>
+      </div>
+    </header>
+    <div class="m-cont">
+      <div class="m-image"></div>
+      <div class="m-text">
+        <h1 id="spe-topic"></h1>
+        <div class="location">
+          <i class="fas fa-map-marker-alt"></i>
+          <p id="spe-location"></p>
+        </div>
+        <div class="rsvp">
+          <i class="fas fa-users"></i>
+          <p class="rsvps"></p>
+        </div>
+        <div class="date">
+          <i class="fas fa-calendar-week"></i>
+          <p id="spe-happeningOn"></p>
+        </div>
+      </div>
+    </div>
+    <form id="rsvp-submit" type="submit">
+      <input type="text" class="rsvp-val" name="rsvpInput" placeholder="Will you love to attend this meetup?" autocomplete="off"/>
+      <span id="rsvp-msg"></span>
+    </form>
+    <form id="question-submit">
+      <input type="text" class="question-val" name="questionInput" placeholder="Ask your question"/>
+      <button type="submit" class="submit-ques">Send your question</button>
+    </form>
+    <hr/>
+    <p class="dicussions">Discussions</p>
+    <div id="questions"></div>
+    <div class="error-cont" id="error-div">
+      <p id="error"></p>
+    </div>
+  </div>
+  <script language='javascript' src='./assets/js/meetupDetails.js'></script>
+  <script language='javascript' src='./assets/js/general.js'></script>
+</body>
+</html>
