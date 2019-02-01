@@ -23,6 +23,7 @@ const editSuccess = document.getElementById('edit-success');
 const route = 'http://localhost:2000/api/v1/meetups';
 const token = localStorage.getItem('token');
 
+let meetupData = '';
 // load meetups on page load
 const getAllMeetups = () => {
   fetch(route, {
@@ -33,7 +34,7 @@ const getAllMeetups = () => {
   })
     .then(response => response.json())
     .then((data) => {
-      const meetupData = data.data;
+      meetupData = data.data;
       meetupData.sort((a, b) => b.id - a.id);
       meetupData.map((meetup) => {
         let meet = `<div class="meetup-cont" id=${meetup.id}>`;
@@ -208,4 +209,30 @@ submitEdit[0].addEventListener('submit', (e) => {
     .catch((err) => {
       throw new Error(err);
     });
+});
+
+// search feature
+const searchForm = document.getElementById('search-bar');
+
+searchForm.addEventListener('keyup', (e) => {
+  meetups.innerHTML = '';
+  const searchValue = searchForm.search.value.toString();
+  const valueStr = searchValue.toLowerCase();
+  e.preventDefault();
+  meetupData.filter((meetupList) => {
+    if (meetupList.topic.toLowerCase().includes(valueStr)
+    || meetupList.tags.join(' ').toLowerCase().includes(valueStr)
+    || meetupList.location.toLowerCase().includes(valueStr)) {
+      let meet = `<div class="meetup-cont" id=${meetupList.id}>`;
+      meet += `<div class="meetup-text" id=${meetupList.id}>`;
+      meet += `<p>${new Date(meetupList.happeningon).toDateString()}</p>`;
+      meet += `<h3 id=${meetupList.id} class="meetup-topic">${meetupList.topic}</h3>`;
+      meet += `<p>${meetupList.location}</p>`;
+      meet += `<span>${meetupList.tags.join(' ')}</span>`;
+      meet += '</div>';
+      meet += '</div>';
+      meetups.innerHTML += meet;
+    }
+    return meetupList;
+  });
 });

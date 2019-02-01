@@ -5,6 +5,7 @@ const meetups = document.getElementById('meetups');
 const route = 'http://localhost:2000/api/v1/meetups';
 const token = localStorage.getItem('token');
 
+let searchArray = '';
 // load meetups on page load
 const getAllMeetups = () => {
   fetch(route, {
@@ -51,4 +52,30 @@ meetups.addEventListener('click', (e) => {
         window.location.href = 'meetupDetails.html';
       });
   }
+});
+
+// search feature
+const searchForm = document.getElementById('search-bar');
+
+searchForm.addEventListener('keyup', (e) => {
+  meetups.innerHTML = '';
+  const searchValue = searchForm.search.value.toString();
+  const valueStr = searchValue.toLowerCase();
+  e.preventDefault();
+  searchArray.filter((meetupList) => {
+    if (meetupList.topic.toLowerCase().includes(valueStr)
+    || meetupList.tags.join(' ').toLowerCase().includes(valueStr)
+    || meetupList.location.toLowerCase().includes(valueStr)) {
+      let meet = `<div class="meetup-cont" id=${meetupList.id}>`;
+      meet += `<div class="meetup-text" id=${meetupList.id}>`;
+      meet += `<p>${new Date(meetupList.happeningon).toDateString()}</p>`;
+      meet += `<h3 id=${meetupList.id} class="meetup-topic">${meetupList.topic}</h3>`;
+      meet += `<p>${meetupList.location}</p>`;
+      meet += `<span>${meetupList.tags.join(' ')}</span>`;
+      meet += '</div>';
+      meet += '</div>';
+      meetups.innerHTML += meet;
+    }
+    return meetupList;
+  });
 });
