@@ -3,13 +3,13 @@ Crowd-source questions for a meetup. Questioner helps the meetup organizer prior
 
 Application is hosted on **github-pages** [ here ](https://mchardex.github.io/questionerFrontend/index.html)
 
+Application database documentation is on this **repository** [ here ](https://github.com/McHardex/questioner)
+
 ## Made With
   ### UI
     * HTML for writing the webpage
     * CSS for styling
     * Javascript to consume the application database hosted on heroku
-    * Application database documentation is on this **repository**
-    [ here ](https://github.com/McHardex/questioner).
 
 ## Features of the app
 * Users can Signup and log in on the app
