@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Questioner</title>
+  <link rel="stylesheet" type="text/css" href="./assets/stylesheets/admin.css">
+  <link href="https://fonts.googleapis.com/css?family=Montserrat:100" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Montserrat:200" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Montserrat:300" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Montserrat:400" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Montserrat:500" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Montserrat:600" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Montserrat:700" rel="stylesheet">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
+</head>
+<body>
+  <div class='admin-cont'>
+      <header>
+        <div class="questioner-logo">
+          <a href="./meetups.html"><img src="./assets/images/logoi.png" alt="questioner-logo"/></a>
+          <span>QUESTIONER</span>
+        </div>
+        <div class="user">
+          <i class="fas fa-user-cog"></i>
+          <span id="user"></span>
+          <div class="dropdown-content">
+            <a href="profile.html">Profile</a>
+            <a href="meetups.html">Meetup</a>
+            <a href="" id="logout">logout</a>
+          </div>
+        </div>
+      </header>
+    <div class='cont'>
+      <div class="create-meetup-bk">
+        <div class="banner-text">
+          <h1>Create a new Meetup</h1>
+          <p>Enrich lives through open mindset and constructive discussions</p>
+        </div>
+      </div>
+      <p id="success">Meetup Created Successfully</p>
+      <form class="create-meetup" id="create-meetup">
+        <label>Topic</label>
+        <input class='form-input' name='topic' type='text' required />
+        <label>Date</label>
+        <input class='form-input empty' name='happeningOn' type='date' required />
+        <label>Location</label>
+        <input class='form-input' name='location' type='text' required />
+        <label>Tags</label>
+        <input class='form-input' name='tags[]' type='text' id="tag1" required />
+        <input class='form-input' name='tags[]' type='text' id="tag2" required />
+        <input class='form-input' name='tags[]' type='text' id="tag3" required />
+        <button type='submit' class='submit-form'>Create Meetup</button>
+      </form>
+      <hr/>
+
+      <form class="search-bar">
+        <input type="text" autocomplete="on" placeholder="Search Meetup" class="search-meetup" tabindex="2"/>
+      </form>
+      <div id="overlay"></div>
+      <div class="meetups" id="meetups"></div>
+    </div>
+    <!-- form edit -->
+    <div class="form-edit-cont" id="modal">
+      <p id="edit-success">Meetup Updated Successfully</p>
+      <form class="editform">
+            <label>Topic</label>
+          <input class='form-input' name='topic' type='text' id='topic' required />
+          <label>Date</label>
+          <input class='form-input empty' name='happeningOn' id='happeningOn' type='date' required />
+          <label>Location</label>
+          <input class='form-input' name='location' type='text' id='location' required />
+          <label>Tags</label>
+          <input class='form-input' name='tags[]' type='text' id="edit-tag1" required />
+          <input class='form-input' name='tags[]' type='text' id="edit-tag2" required />
+          <input class='form-input' name='tags[]' type='text' id="edit-tag3" required />
+          <button type='submit' class='update-form'>Update Meetup</button>
+          <button class='close-div' id='closeModal'>X</button>
+        </form>
+      </div>
+  </div>
+  <div class="error-cont" id="error-div">
+    <p id="error"></p>
+    <span id="exit-error">X</span>
+  </div>
+  <script language='javascript' src='./assets/js/admin.js'></script>
+  <script language='javascript' src='./assets/js/general.js'></script>
+</body>
+</html>
