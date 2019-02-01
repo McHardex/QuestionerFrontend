@@ -1,11 +1,11 @@
 /* eslint-disable no-undef */
+
 const error = document.getElementById('error');
 const exitError = document.getElementById('exit-error');
 const errorDiv = document.getElementById('error-div');
-const successMsg = document.getElementById('success');
 
-const form = document.getElementById('signup-form');
-const route = 'http://localhost:2000/api/v1/auth/signup';
+const form = document.getElementById('login-form');
+const route = 'http://localhost:2000/api/v1/auth/login';
 
 // clear error message
 exitError.addEventListener('click', (e) => {
@@ -21,46 +21,41 @@ const hideError = () => {
 };
 
 // get form details
-const signupUser = () => {
-  const signupDetails = {
-    firstname: form.firstname.value,
-    lastname: form.lastname.value,
-    othername: form.othername.value,
-    username: form.username.value,
+const loginUser = () => {
+  const loginDetails = {
     email: form.email.value,
-    phoneNumber: form.phoneNumber.value,
     password: form.password.value,
   };
 
   fetch(route, {
     headers: { 'content-type': 'application/json; charset=utf-8' },
     method: 'POST',
-    body: JSON.stringify(signupDetails),
+    body: JSON.stringify(loginDetails),
   })
     .then(response => response.json())
     .then((data) => {
       if (data.error) {
-        error.innerHTML = data.error;
+        error.innerHTML = 'Invalid email or password';
         errorDiv.style.display = 'block';
-        successMsg.style.visibility = 'hidden';
         hideError();
       } else {
-        successMsg.style.visibility = 'visible';
         errorDiv.style.display = 'none';
-        form.reset();
-        localStorage.setItem('token', data.data.token);
-        setTimeout(() => {
-          window.location.href = 'login.html';
-        }, 2000);
+        localStorage.setItem('token', data.data[0].token);
+        localStorage.setItem('user', JSON.stringify(data.data[0].user));
+        if (data.data[0].user.isAdmin) {
+          window.location.href = 'admin.html';
+        } else {
+          window.location.href = 'meetups.html';
+        }
       }
     })
     .catch((err) => {
-      error.innerHTML = err;
+      throw new Error(err);
     });
 };
 
 // submit signup form
 form.addEventListener('submit', (e) => {
   e.preventDefault();
-  signupUser();
+  loginUser();
 });
