@@ -1,5 +1,6 @@
-const questionRoute = 'http://localhost:2000/api/v1/questions';
-const commentRoute = 'http://localhost:2000/api/v1/comments';
+/* eslint-disable no-undef */
+const questionRoute = 'https://questioner-mchardex.herokuapp.com/api/v1/questions';
+const commentRoute = 'https://questioner-mchardex.herokuapp.com/api/v1/comments';
 const token = localStorage.getItem('token');
 const meetupDetails = JSON.parse(localStorage.getItem('meetupDetails'));
 
@@ -18,7 +19,7 @@ const getQuestions = () => {
   fetch(commentRoute, {
     headers: {
       'content-type': 'application/json; charset=utf-8',
-      'x-auth-token': token
+      'x-auth-token': token,
     },
   })
     .then(response => response.json())
@@ -29,24 +30,24 @@ const getQuestions = () => {
       questionComments.map((comments) => {
         let str = `<div class="question-cont" id=${comments.id}>`;
         str += `<h3>${comments.title}</h3>`;
-        str += `<div class="likes-dis">`;
-        str += `<div class="upvote">`;
+        str += '<div class="likes-dis">';
+        str += '<div class="upvote">';
         str += `<i class="far fa-thumbs-up" id=${comments.id}></i>`;
         str += `<span>${comments.upvote}</span>`;
-        str += `</div>`;
-        str += `<div class="downvote">`;
+        str += '</div>';
+        str += '<div class="downvote">';
         str += `<i class="far fa-thumbs-down" id=${comments.id}></i>`;
         str += ` <span>${comments.downvote}</span>`;
-        str += `</div>`;
-        str += `</div>`;
-        str += `<div id="comments">`;
-        str += `<form class="post-comment">`;
-        str += `<input type='text' class='form-input' placeholder='comment' required/>`;
+        str += '</div>';
+        str += '</div>';
+        str += '<div id="comments">';
+        str += '<form class="post-comment">';
+        str += '<input type="text" class="form-input" placeholder="comment" required/>';
         str += `<button type='submit' class='submit-comment' id=${comments.id}>Send</button>`;
-        str += `</form>`;
-        str += `<p>${comments.comment === "null" ? "Be the first" : comments.comment}</p>`;
-        str += `</div>`;
-        str += `</div>`;
+        str += '</form>';
+        str += `<p>${comments.comment === 'null' ? 'Be the first' : comments.comment}</p>`;
+        str += '</div>';
+        str += '</div>';
         questionWrap.innerHTML += str;
         return true;
       });
@@ -56,7 +57,7 @@ const getQuestions = () => {
 
 // get rsvps
 const rsvps = document.getElementsByClassName('rsvps');
-fetch('http://localhost:2000/api/v1/rsvps', {
+fetch('https://questioner-mchardex.herokuapp.com/api/v1/rsvps', {
   headers: {
     'content-type': 'application/json; charset=utf-8',
     'x-auth-token': token,
@@ -65,7 +66,7 @@ fetch('http://localhost:2000/api/v1/rsvps', {
   .then(response => response.json())
   .then((data) => {
     if (data.error) {
-      rsvps[0].innerHTML = `no one is coming yet`;
+      rsvps[0].innerHTML = 'no one is coming yet';
     } else {
       const filterData = data.data.filter(rsvp => (rsvp.meetup_id === meetupDetails.id) && (rsvp.response === 'yes' || 'maybe'));
       if (filterData.length === 1) {
@@ -87,7 +88,7 @@ questionWrap.addEventListener('click', (e) => {
         'content-type': 'application/json; charset=utf-8',
         'x-auth-token': token,
       },
-      method: 'PATCH'
+      method: 'PATCH',
     });
     setTimeout(() => {
       window.location.reload();
@@ -104,7 +105,7 @@ questionWrap.addEventListener('click', (e) => {
         'content-type': 'application/json; charset=utf-8',
         'x-auth-token': token,
       },
-      method: 'PATCH'
+      method: 'PATCH',
     });
     setTimeout(() => {
       window.location.reload();
@@ -132,8 +133,8 @@ questionWrap.addEventListener('click', (e) => {
       method: 'POST',
       body: JSON.stringify({
         comment: commentInput.join(''),
-        question_id: e.target.id
-      })
+        question_id: e.target.id,
+      }),
     })
       .then(response => response.json())
       .then((data) => {
@@ -162,7 +163,7 @@ questionForm.addEventListener('submit', (e) => {
   const questionDetails = {
     title: questionForm.questionInput.value,
     meetup_id: meetupDetails.id,
-    body: "any message... not required***"
+    body: 'any message... not required***',
   };
   e.preventDefault();
   fetch(questionRoute, {
@@ -171,7 +172,7 @@ questionForm.addEventListener('submit', (e) => {
       'x-auth-token': token,
     },
     method: 'POST',
-    body: JSON.stringify(questionDetails)
+    body: JSON.stringify(questionDetails),
   })
     .then(response => response.json())
     .then((data) => {
@@ -203,13 +204,13 @@ rsvpForm.addEventListener('submit', (e) => {
     response: rsvpForm.rsvpInput.value.toLowerCase(),
   };
   e.preventDefault();
-  fetch(`http://localhost:2000/api/v1/meetups/${meetupDetails.id}/rsvps`, {
+  fetch(`https://questioner-mchardex.herokuapp.com/api/v1/meetups/${meetupDetails.id}/rsvps`, {
     headers: {
       'content-type': 'application/json; charset=utf-8',
       'x-auth-token': token,
     },
     method: 'POST',
-    body: JSON.stringify(rsvpDetails)
+    body: JSON.stringify(rsvpDetails),
   })
     .then(response => response.json())
     .then((data) => {
@@ -222,7 +223,7 @@ rsvpForm.addEventListener('submit', (e) => {
         }, 10000);
       } else {
         responseMsg.classList.add('rsvp-success');
-        responseMsg.innerHTML = "Your response has been recorded";
+        responseMsg.innerHTML = 'Your response has been recorded';
         responseMsg.style.display = 'block';
         responseMsg.style.color = 'green';
         setTimeout(() => {

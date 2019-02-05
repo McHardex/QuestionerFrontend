@@ -2,7 +2,7 @@
 
 const meetups = document.getElementById('meetups');
 
-const route = 'http://localhost:2000/api/v1/meetups';
+const route = 'https://questioner-mchardex.herokuapp.com/api/v1/meetups';
 const token = localStorage.getItem('token');
 
 let searchArray = '';

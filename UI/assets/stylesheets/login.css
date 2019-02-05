@@ -198,6 +198,27 @@ a.sign-up:hover, .getstarted:hover {
   font-weight: 900;
 }
 
+#loader {
+  display: none;
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  width: 200px;
+  height: 100px;
+  margin: auto;
+  justify-content: center;
+  align-items: center;
+  border-radius: 100px;
+}
+
+#loader img {
+  height: 60px;
+  background: #363636;
+  border-radius: 50px;
+}
+
 @media (min-width: 320px) and (max-width: 480px) {
   .col2 {
     display: none;

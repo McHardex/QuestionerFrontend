@@ -2,7 +2,7 @@
 
 const upcomingMeetups = document.getElementById('upcoming-meetups');
 
-const route = 'http://localhost:2000/api/v1/meetups/upcoming';
+const route = 'https://questioner-mchardex.herokuapp.com/api/v1/meetups/upcoming';
 const token = localStorage.getItem('token');
 
 // load meetups on page load
@@ -41,7 +41,7 @@ window.onload = getAllMeetups();
 upcomingMeetups.addEventListener('click', (e) => {
   if (e.target.id && e.target.classList.contains('meetup-topic')) {
     const meetupId = e.target.id;
-    fetch(`http://localhost:2000/api/v1/meetups/${meetupId}`, {
+    fetch(`https://questioner-mchardex.herokuapp.com/api/v1/meetups/${meetupId}`, {
       headers: {
         'content-type': 'application/json; charset=utf-8',
         'x-auth-token': token,
@@ -68,7 +68,7 @@ name[0].innerHTML = `${profile.firstname} ${profile.lastname}`;
 email[0].innerHTML = profile.email;
 
 // fetch questions and get no of questions posted by user
-fetch('http://localhost:2000/api/v1/questions', {
+fetch('https://questioner-mchardex.herokuapp.com/api/v1/questions', {
   headers: {
     'content-type': 'application/json; charset=utf-8',
     'x-auth-token': token,
@@ -86,7 +86,7 @@ fetch('http://localhost:2000/api/v1/questions', {
   .catch((err) => { throw new Error(err); });
 
 // fetch comments and get total no of questions commentted on by active user
-fetch(`http://localhost:2000/api/v1/comments/${profile.id}`, {
+fetch(`https://questioner-mchardex.herokuapp.com/api/v1/comments/${profile.id}`, {
   headers: {
     'content-type': 'application/json; charset=utf-8',
     'x-auth-token': token,

@@ -3,9 +3,10 @@
 const error = document.getElementById('error');
 const exitError = document.getElementById('exit-error');
 const errorDiv = document.getElementById('error-div');
+const loader = document.getElementById('loader');
 
 const form = document.getElementById('login-form');
-const route = 'http://localhost:2000/api/v1/auth/login';
+const route = 'https://questioner-mchardex.herokuapp.com/api/v1/auth/login';
 
 // clear error message
 exitError.addEventListener('click', (e) => {
@@ -28,7 +29,10 @@ const loginUser = () => {
   };
 
   fetch(route, {
-    headers: { 'content-type': 'application/json; charset=utf-8' },
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+    },
     method: 'POST',
     body: JSON.stringify(loginDetails),
   })
@@ -37,9 +41,11 @@ const loginUser = () => {
       if (data.error) {
         error.innerHTML = 'Invalid email or password';
         errorDiv.style.display = 'block';
+        loader.style.display = 'none';
         hideError();
       } else {
         errorDiv.style.display = 'none';
+        loader.style.display = 'none';
         localStorage.setItem('token', data.data[0].token);
         localStorage.setItem('user', JSON.stringify(data.data[0].user));
         if (data.data[0].user.isAdmin) {
@@ -50,6 +56,9 @@ const loginUser = () => {
       }
     })
     .catch((err) => {
+      error.innerHTML = 'slow or no connection...try reconnecting';
+      errorDiv.style.display = 'block';
+      loader.style.display = 'none';
       throw new Error(err);
     });
 };
@@ -57,5 +66,7 @@ const loginUser = () => {
 // submit signup form
 form.addEventListener('submit', (e) => {
   e.preventDefault();
+  loader.style.display = 'flex';
+  errorDiv.style.display = 'none';
   loginUser();
 });

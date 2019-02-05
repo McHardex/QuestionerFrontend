@@ -118,8 +118,8 @@ label {
 }
 
 .submit-form {
-  background-color: #aaa;
-  border: 1px solid #aaa;
+  background: linear-gradient(to right,#f05a28 0,#e80a89 100%);
+  border: none;
   text-decoration: none;
   border-radius: 2px;
   cursor: pointer;
@@ -134,7 +134,7 @@ label {
   border: 1px solid #f96816;
   color: #f96816;
   text-decoration: none;
-  background-color: transparent;
+  background: transparent;
 }
 
 .error-cont {
@@ -168,7 +168,7 @@ label {
 
 #success {
   padding: 0 20px;
-  color: #ccc;
+  color: #6bc706;
   display: block;
   visibility: hidden;
   margin: 0;
@@ -178,6 +178,27 @@ label {
   text-decoration: none;
   color: #ea722c;
   cursor: pointer;
+}
+
+#loader {
+  display: none;
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  width: 200px;
+  height: 100px;
+  margin: auto;
+  justify-content: center;
+  align-items: center;
+  border-radius: 100px;
+}
+
+#loader img {
+  height: 60px;
+  background: #363636;
+  border-radius: 50px;
 }
 
 @media (min-width: 320px) and (max-width: 480px) {

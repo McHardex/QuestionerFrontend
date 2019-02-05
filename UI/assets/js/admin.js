@@ -19,8 +19,9 @@ const exitError = document.getElementById('exit-error');
 const errorDiv = document.getElementById('error-div');
 const successMsg = document.getElementById('success');
 const editSuccess = document.getElementById('edit-success');
+const loader = document.getElementById('loader');
 
-const route = 'http://localhost:2000/api/v1/meetups';
+const route = 'https://questioner-mchardex.herokuapp.com/api/v1/meetups';
 const token = localStorage.getItem('token');
 
 let meetupData = '';
@@ -28,7 +29,8 @@ let meetupData = '';
 const getAllMeetups = () => {
   fetch(route, {
     headers: {
-      'content-type': 'application/json; charset=utf-8',
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
       'x-auth-token': token,
     },
   })
@@ -81,7 +83,8 @@ const createMeetup = () => {
   };
   fetch(route, {
     headers: {
-      'content-type': 'application/json; charset=utf-8',
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
       'x-auth-token': token,
     },
     method: 'POST',
@@ -91,11 +94,13 @@ const createMeetup = () => {
     .then((data) => {
       if (data.error) {
         error.innerHTML = data.error;
+        loader.style.display = 'none';
         errorDiv.style.display = 'block';
         successMsg.style.visibility = 'hidden';
         hideError();
       } else {
         successMsg.style.visibility = 'visible';
+        loader.style.display = 'none';
         errorDiv.style.display = 'none';
         form.reset();
         setTimeout(() => {
@@ -104,12 +109,16 @@ const createMeetup = () => {
       }
     })
     .catch((err) => {
+      error.innerHTML = 'slow or no connection...try reconnecting';
+      errorDiv.style.display = 'block';
+      loader.style.display = 'none';
       throw new Error(err);
     });
 };
 
 form.addEventListener('submit', (e) => {
   e.preventDefault();
+  loader.style.display = 'flex';
   createMeetup();
   setTimeout(() => {
     getAllMeetups();
@@ -123,7 +132,8 @@ meetups.addEventListener('click', (e) => {
     e.preventDefault();
     fetch(`${route}/${e.target.id}`, {
       headers: {
-        'content-type': 'application/json; charset=utf-8',
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
         'x-auth-token': token,
       },
       method: 'DELETE',
@@ -184,7 +194,8 @@ submitEdit[0].addEventListener('submit', (e) => {
   };
   fetch(`${route}/${e.target.id}`, {
     headers: {
-      'content-type': 'application/json; charset=utf-8',
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
       'x-auth-token': token,
     },
     method: 'PUT',
