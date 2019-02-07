@@ -66,8 +66,10 @@ fetch('https://questioner-mchardex.herokuapp.com/api/v1/rsvps', {
   .then(response => response.json())
   .then((data) => {
     if (data.error) {
+      loader.style.display = 'none';
       rsvps[0].innerHTML = 'no one is coming yet';
     } else {
+      loader.style.display = 'none';
       const filterData = data.data.filter(rsvp => (rsvp.meetup_id === meetupDetails.id) && (rsvp.response === 'yes' || 'maybe'));
       if (filterData.length === 1) {
         rsvps[0].innerHTML = `${filterData.length} person is coming`;
@@ -77,7 +79,10 @@ fetch('https://questioner-mchardex.herokuapp.com/api/v1/rsvps', {
     }
   });
 
-window.onload = getQuestions();
+window.onload = () => {
+  loader.style.display = 'flex';
+  getQuestions();
+};
 
 // upvote question
 questionWrap.addEventListener('click', (e) => {
@@ -89,10 +94,13 @@ questionWrap.addEventListener('click', (e) => {
         'x-auth-token': token,
       },
       method: 'PATCH',
-    });
-    setTimeout(() => {
-      window.location.reload();
-    }, 10);
+    })
+      .then(response => response.json())
+      .then(() => {
+        setTimeout(() => {
+          window.location.reload();
+        }, 10);
+      });
   }
 });
 
@@ -106,10 +114,13 @@ questionWrap.addEventListener('click', (e) => {
         'x-auth-token': token,
       },
       method: 'PATCH',
-    });
-    setTimeout(() => {
-      window.location.reload();
-    }, 10);
+    })
+      .then(response => response.json())
+      .then(() => {
+        setTimeout(() => {
+          window.location.reload();
+        }, 10);
+      });
   }
 });
 
@@ -124,6 +135,7 @@ const error = document.getElementById('error');
 const errorDiv = document.getElementById('error-div');
 questionWrap.addEventListener('click', (e) => {
   if (e.target.id && e.target.classList.contains('submit-comment')) {
+    loader.style.display = 'flex';
     e.preventDefault();
     fetch(commentRoute, {
       headers: {
@@ -139,6 +151,7 @@ questionWrap.addEventListener('click', (e) => {
       .then(response => response.json())
       .then((data) => {
         if (data.error) {
+          loader.style.display = 'none';
           error.innerHTML = data.error;
           errorDiv.style.display = 'block';
           setTimeout(() => {
@@ -146,6 +159,7 @@ questionWrap.addEventListener('click', (e) => {
           }, 5000);
         } else {
           errorDiv.style.display = 'none';
+          loader.style.display = 'none';
           setTimeout(() => {
             window.location.reload();
           }, 10);
@@ -160,6 +174,7 @@ questionWrap.addEventListener('click', (e) => {
 const questionForm = document.getElementById('question-submit');
 
 questionForm.addEventListener('submit', (e) => {
+  loader.style.display = 'flex';
   const questionDetails = {
     title: questionForm.questionInput.value,
     meetup_id: meetupDetails.id,
@@ -177,6 +192,7 @@ questionForm.addEventListener('submit', (e) => {
     .then(response => response.json())
     .then((data) => {
       if (data.error) {
+        loader.style.display = 'none';
         error.innerHTML = data.error;
         errorDiv.style.display = 'block';
         setTimeout(() => {
@@ -184,6 +200,7 @@ questionForm.addEventListener('submit', (e) => {
         }, 10000);
       } else {
         errorDiv.style.display = 'none';
+        loader.style.display = 'none';
         setTimeout(() => {
           getQuestions();
           window.location.reload();
@@ -200,6 +217,7 @@ const rsvpForm = document.getElementById('rsvp-submit');
 const responseMsg = document.getElementById('rsvp-msg');
 
 rsvpForm.addEventListener('submit', (e) => {
+  loader.style.display = 'flex';
   const rsvpDetails = {
     response: rsvpForm.rsvpInput.value.toLowerCase(),
   };
@@ -215,20 +233,24 @@ rsvpForm.addEventListener('submit', (e) => {
     .then(response => response.json())
     .then((data) => {
       if (data.error) {
+        loader.style.display = 'none';
         responseMsg.innerHTML = data.error;
         responseMsg.style.display = 'block';
         responseMsg.style.color = 'red';
         setTimeout(() => {
           responseMsg.style.display = 'none';
-        }, 10000);
+          window.location.reload();
+        }, 2000);
       } else {
+        loader.style.display = 'none';
         responseMsg.classList.add('rsvp-success');
         responseMsg.innerHTML = 'Your response has been recorded';
         responseMsg.style.display = 'block';
         responseMsg.style.color = 'green';
         setTimeout(() => {
           responseMsg.style.display = 'none';
-        }, 10000);
+          window.location.reload();
+        }, 2000);
       }
     })
     .catch((err) => { throw new Error(err); });

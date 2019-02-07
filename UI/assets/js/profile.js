@@ -17,7 +17,9 @@ const getAllMeetups = () => {
     .then((data) => {
       if (data.error) {
         upcomingMeetups.innerHTML = data.error;
+        loader.style.display = 'none';
       } else {
+        loader.style.display = 'none';
         searchArray = data.data;
         searchArray.sort((a, b) => b.id - a.id);
         searchArray.map((meetup) => {
@@ -35,11 +37,15 @@ const getAllMeetups = () => {
       }
     });
 };
-window.onload = getAllMeetups();
+window.onload = () => {
+  loader.style.display = 'flex';
+  getAllMeetups();
+};
 
 // get specific meetup
 upcomingMeetups.addEventListener('click', (e) => {
   if (e.target.id && e.target.classList.contains('meetup-topic')) {
+    loader.style.display = 'flex';
     const meetupId = e.target.id;
     fetch(`https://questioner-mchardex.herokuapp.com/api/v1/meetups/${meetupId}`, {
       headers: {
@@ -50,6 +56,7 @@ upcomingMeetups.addEventListener('click', (e) => {
       .then(response => response.json())
       .then((data) => {
         const resp = data.data[0];
+        loader.style.display = 'none';
         localStorage.setItem('meetupDetails', JSON.stringify(resp));
         window.location.href = 'meetupDetails.html';
       });
@@ -77,8 +84,10 @@ fetch('https://questioner-mchardex.herokuapp.com/api/v1/questions', {
   .then(response => response.json())
   .then((data) => {
     if (data.error) {
+      loader.style.display = 'none';
       noOfQuestionsPosted[0].innerHTML = 0;
     } else {
+      loader.style.display = 'none';
       const questions = data.data.filter(question => question.createdby === profile.id);
       noOfQuestionsPosted[0].innerHTML = questions.length;
     }
@@ -96,8 +105,10 @@ fetch(`https://questioner-mchardex.herokuapp.com/api/v1/comments/${profile.id}`,
   .then((data) => {
     if (data.error) {
       noOfComments[0].innerHTML = 0;
+      loader.style.display = 'none';
     } else {
       noOfComments[0].innerHTML = data.data.length;
+      loader.style.display = 'none';
     }
   })
   .catch((err) => { throw new Error(err); });

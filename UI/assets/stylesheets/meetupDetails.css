@@ -310,7 +310,7 @@ a.cte-meetup {
 
 input.rsvp-val {
   padding: 15px 0;
-  width: 40%;
+  width: 90%;
   font-size: 26px;
   color: #ccc;
   background: #ccc0;
@@ -324,6 +324,27 @@ input.rsvp-val {
 #rsvp-msg {
   font-size: 12px;
   display: none;
+}
+
+#loader {
+  display: none;
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  width: 200px;
+  height: 100px;
+  margin: auto;
+  justify-content: center;
+  align-items: center;
+  border-radius: 100px;
+}
+
+#loader img {
+  height: 60px;
+  background: #363636;
+  border-radius: 50px;
 }
 
 @media (min-width: 320px) and (max-width: 480px) {

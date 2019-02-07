@@ -33,28 +33,43 @@ const getAllMeetups = () => {
       'Content-Type': 'application/json',
       'x-auth-token': token,
     },
+    method: 'GET',
+    mode: 'cors',
   })
     .then(response => response.json())
     .then((data) => {
-      meetupData = data.data;
-      meetupData.sort((a, b) => b.id - a.id);
-      meetupData.map((meetup) => {
-        let meet = `<div class="meetup-cont" id=${meetup.id}>`;
-        meet += '<div class="meetup-text">';
-        meet += `<p>${new Date(meetup.happeningon).toDateString()}</p>`;
-        meet += `<h3>${meetup.topic}</h3>`;
-        meet += `<p>${meetup.location}</p>`;
-        meet += `<span>${meetup.tags.join(' ')}</span>`;
-        meet += '</div>';
-        meet += `<i class="fas fa-trash" title="delete" id=${meetup.id}></i>`;
-        meet += `<i class="far fa-edit" title="edit" id=${meetup.id}></i>`;
-        meet += '</div>';
-        meetups.innerHTML += meet;
-        return meetup;
-      });
+      if (data.error) {
+        meetups.innerHTML = 'No meetup record yet';
+        loader.style.display = 'none';
+      } else {
+        meetupData = data.data;
+        meetupData.sort((a, b) => b.id - a.id);
+        meetupData.map((meetup) => {
+          loader.style.display = 'none';
+          let meet = `<div class="meetup-cont" id=${meetup.id}>`;
+          meet += '<div class="meetup-text">';
+          meet += `<p>${new Date(meetup.happeningon).toDateString()}</p>`;
+          meet += `<h3>${meetup.topic}</h3>`;
+          meet += `<p>${meetup.location}</p>`;
+          meet += `<span>${meetup.tags.join(' ')}</span>`;
+          meet += '</div>';
+          meet += `<i class="fas fa-trash" title="delete" id=${meetup.id}></i>`;
+          meet += `<i class="far fa-edit" title="edit" id=${meetup.id}></i>`;
+          meet += '</div>';
+          meetups.innerHTML += meet;
+          return meetup;
+        });
+      }
+    })
+    .catch((err) => {
+      throw new Error(err);
     });
 };
-window.onload = getAllMeetups();
+
+window.onload = () => {
+  loader.style.display = 'flex';
+  getAllMeetups();
+};
 
 // clear form error message
 exitError.addEventListener('click', (e) => {
@@ -88,6 +103,7 @@ const createMeetup = () => {
       'x-auth-token': token,
     },
     method: 'POST',
+    mode: 'cors',
     body: JSON.stringify(meetupDetails),
   })
     .then(response => response.json())
@@ -104,8 +120,9 @@ const createMeetup = () => {
         errorDiv.style.display = 'none';
         form.reset();
         setTimeout(() => {
-          successMsg.style.visibility = 'hidden';
-        }, 10000);
+          getAllMeetups();
+          window.location.reload();
+        }, 1000);
       }
     })
     .catch((err) => {
@@ -120,15 +137,12 @@ form.addEventListener('submit', (e) => {
   e.preventDefault();
   loader.style.display = 'flex';
   createMeetup();
-  setTimeout(() => {
-    getAllMeetups();
-    window.location.reload();
-  }, 1000);
 });
 
 // delete meetup
 meetups.addEventListener('click', (e) => {
   if (e.target.id && e.target.classList.contains('fa-trash')) {
+    loader.style.display = 'flex';
     e.preventDefault();
     fetch(`${route}/${e.target.id}`, {
       headers: {
@@ -137,6 +151,7 @@ meetups.addEventListener('click', (e) => {
         'x-auth-token': token,
       },
       method: 'DELETE',
+      mode: 'cors',
     })
       .then(response => response.json())
       .then((data) => {
@@ -144,9 +159,11 @@ meetups.addEventListener('click', (e) => {
           error.innerHTML = data.error;
           errorDiv.style.display = 'block';
           editSuccess.style.visibility = 'hidden';
+          loader.style.display = 'none';
           hideError();
         } else {
           errorDiv.style.display = 'none';
+          loader.style.display = 'none';
           setTimeout(() => {
             getAllMeetups();
             window.location.reload();
@@ -154,6 +171,7 @@ meetups.addEventListener('click', (e) => {
         }
       })
       .catch((err) => {
+        loader.style.display = 'none';
         throw new Error(err);
       });
   }
@@ -162,11 +180,42 @@ meetups.addEventListener('click', (e) => {
 // edit meetup
 meetups.addEventListener('click', (e) => {
   if (e.target.id && e.target.classList.contains('fa-edit')) {
+    loader.style.display = 'flex';
     const { id } = e.target;
-    modal.style.display = 'block';
-    meetups.style.display = 'none';
-    overlay.style.visibility = 'visible';
-    submitEdit[0].setAttribute('id', `${id}`);
+    fetch(`${route}/${id}`, {
+      headers: {
+        'content-type': 'application/json; charset=utf-8',
+        'x-auth-token': token,
+      },
+    })
+      .then(response => response.json())
+      .then((data) => {
+        if (data.error) {
+          loader.style.display = 'none';
+          throw new Error(data.error);
+        } else {
+          const resp = data.data[0];
+          localStorage.setItem('meetupDetails', JSON.stringify(resp));
+          modal.style.display = 'block';
+          meetups.style.display = 'none';
+          overlay.style.visibility = 'visible';
+          submitEdit[0].setAttribute('id', `${id}`);
+          loader.style.display = 'none';
+          setTimeout(() => {
+            // set default value for edit form input
+            const editDefaultvalue = JSON.parse(localStorage.getItem('meetupDetails'));
+            document.getElementById('topic').defaultValue = editDefaultvalue.topic;
+            document.getElementById('happeningOn').defaultValue = editDefaultvalue.happeningon;
+            document.getElementById('location').defaultValue = editDefaultvalue.location;
+            const firstTag = editDefaultvalue.tags[0];
+            const secondTag = editDefaultvalue.tags[1];
+            const thirdTag = editDefaultvalue.tags[2];
+            editTag1.defaultValue = firstTag;
+            editTag2.defaultValue = secondTag;
+            editTag3.defaultValue = thirdTag;
+          }, 1000);
+        }
+      });
   }
 });
 
@@ -180,7 +229,9 @@ closeModal.addEventListener('click', (e) => {
   modal.style.display = 'none';
 });
 
+// submit form edit
 submitEdit[0].addEventListener('submit', (e) => {
+  loader.style.display = 'flex';
   e.preventDefault();
   const tagsValue1 = editTag1.value;
   const tagsValue2 = editTag2.value;
@@ -199,6 +250,7 @@ submitEdit[0].addEventListener('submit', (e) => {
       'x-auth-token': token,
     },
     method: 'PUT',
+    mode: 'cors',
     body: JSON.stringify(meetupDetails),
   })
     .then(response => response.json())
@@ -207,17 +259,28 @@ submitEdit[0].addEventListener('submit', (e) => {
         error.innerHTML = data.error;
         errorDiv.style.display = 'block';
         editSuccess.style.visibility = 'hidden';
+        loader.style.display = 'none';
         hideError();
       } else {
+        // clear edit form input value on submit
+        document.getElementById('topic').value = '';
+        document.getElementById('happeningOn').value = '';
+        document.getElementById('location').value = '';
+        editTag1.value = '';
+        editTag2.value = '';
+        editTag3.value = '';
+
+
         editSuccess.style.visibility = 'visible';
         errorDiv.style.display = 'none';
-        submitEdit[0].reset();
+        loader.style.display = 'none';
         setTimeout(() => {
           editSuccess.style.visibility = 'hidden';
         }, 10000);
       }
     })
     .catch((err) => {
+      loader.style.display = 'none';
       throw new Error(err);
     });
 });

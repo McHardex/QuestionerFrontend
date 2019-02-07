@@ -38,6 +38,7 @@ const signupUser = () => {
       'Content-Type': 'application/json',
     },
     method: 'POST',
+    mode: 'cors',
     body: JSON.stringify(signupDetails),
   })
     .then(response => response.json())

@@ -34,6 +34,7 @@ const loginUser = () => {
       'Content-Type': 'application/json',
     },
     method: 'POST',
+    mode: 'cors',
     body: JSON.stringify(loginDetails),
   })
     .then(response => response.json())
