@@ -290,6 +290,7 @@ a.cte-meetup {
 
   .up-header {
     text-align: center;
+    font-size: 20px;
   }
 
   .user span {
@@ -302,7 +303,7 @@ a.cte-meetup {
   }
 
   th {
-    font-size: 24px;
+    font-size: 14px;
   }
 
   td {
@@ -312,6 +313,7 @@ a.cte-meetup {
 
   td:nth-child(even) {
     font-size: 12px;
+    text-align: center;
   }
 }
 

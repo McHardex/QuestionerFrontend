@@ -4,6 +4,7 @@ body {
   background: #222;
   color: #fff;
   font-family: 'Montserrat', sans-serif;
+  width: 100%;
 }
 
 header {
@@ -117,8 +118,8 @@ i.fas.fa-user-cog {
 }
 
 .m-text h1 {
- font-size: 25px;
- text-transform: capitalize;
+  font-size: 18px;
+  text-transform: lowercase;
 }
 
 .m-text p {
@@ -314,7 +315,7 @@ input.rsvp-val {
   font-size: 26px;
   color: #ccc;
   background: #ccc0;
-  border: 1px solid #222;
+  border: 1px solid #313030;
   outline: none;
   text-align: center;
   font-weight: 100;
@@ -358,6 +359,7 @@ input.rsvp-val {
 
   .m-text {
     text-align: center;
+    margin: 0;
   }
 
   i.far.fa-thumbs-up, i.far.fa-thumbs-down {
@@ -388,9 +390,34 @@ input.rsvp-val {
 
   input.rsvp-val {
     width: 100%;
+    font-size: 18px;
   }
 
   .user span {
     display: none;
+  }
+
+  .dropdown-content {
+    left: auto;
+  }
+
+  form#question-submit {
+    width: 100%;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  input.question-val {
+    border-radius: 0;
+    padding: 20px 0;
+    width: 95%;
+    text-align: center;
+  }
+
+  button.submit-ques {
+    border: none;
+    border-radius: 0;
+    width: 96%;
+    margin: 10px 0;
   }
 }

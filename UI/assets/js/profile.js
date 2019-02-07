@@ -16,7 +16,7 @@ const getAllMeetups = () => {
     .then(response => response.json())
     .then((data) => {
       if (data.error) {
-        upcomingMeetups.innerHTML = data.error;
+        upcomingMeetups.innerHTML = 'There are no upcoming meetups';
         loader.style.display = 'none';
       } else {
         loader.style.display = 'none';
