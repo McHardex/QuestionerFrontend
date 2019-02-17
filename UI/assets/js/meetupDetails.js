@@ -33,11 +33,7 @@ const getQuestions = () => {
         str += '<div class="likes-dis">';
         str += '<div class="upvote">';
         str += `<i class="far fa-thumbs-up" id=${comments.id}></i>`;
-        str += `<span>${comments.upvote}</span>`;
-        str += '</div>';
-        str += '<div class="downvote">';
-        str += `<i class="far fa-thumbs-down" id=${comments.id}></i>`;
-        str += ` <span>${comments.downvote}</span>`;
+        str += `<span>${comments.votes}</span>`;
         str += '</div>';
         str += '</div>';
         str += '<div id="comments">';
@@ -49,6 +45,7 @@ const getQuestions = () => {
         str += '</div>';
         str += '</div>';
         questionWrap.innerHTML += str;
+        loader.style.display = 'none';
         return true;
       });
     })
@@ -88,27 +85,7 @@ window.onload = () => {
 questionWrap.addEventListener('click', (e) => {
   e.preventDefault();
   if (e.target.classList.contains('fa-thumbs-up')) {
-    fetch(`${questionRoute}/${e.target.id}/upvote`, {
-      headers: {
-        'content-type': 'application/json; charset=utf-8',
-        'x-auth-token': token,
-      },
-      method: 'PATCH',
-    })
-      .then(response => response.json())
-      .then(() => {
-        setTimeout(() => {
-          window.location.reload();
-        }, 10);
-      });
-  }
-});
-
-// downvote question
-questionWrap.addEventListener('click', (e) => {
-  e.preventDefault();
-  if (e.target.classList.contains('fa-thumbs-down')) {
-    fetch(`${questionRoute}/${e.target.id}/downvote`, {
+    fetch(`https://questioner-mchardex.herokuapp.com/api/v1/questions/${e.target.id}/upvote`, {
       headers: {
         'content-type': 'application/json; charset=utf-8',
         'x-auth-token': token,
@@ -178,7 +155,7 @@ questionForm.addEventListener('submit', (e) => {
   const questionDetails = {
     title: questionForm.questionInput.value,
     meetup_id: meetupDetails.id,
-    body: 'any message... not required***',
+    body: 'we aint keeping our cool bro, so you gotta show us some amazing love',
   };
   e.preventDefault();
   fetch(questionRoute, {

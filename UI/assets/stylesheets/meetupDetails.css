@@ -33,8 +33,8 @@ header {
 .dropdown-content {
   display: none;
   position: absolute;
-  right: 0;
-  left: 0;
+  right: -19px;
+  left: -37px;
   background-color: #000;
   z-index: 1;
   text-align: center;
@@ -193,27 +193,22 @@ button.submit-ques:hover {
   text-transform: capitalize;
 }
 
-i.far.fa-thumbs-up, i.far.fa-thumbs-down {
+i.far.fa-thumbs-up {
   font-size: 35px;
   cursor: pointer;
+  opacity: 0.7;
+}
+
+i.far.fa-thumbs-up:hover {
+  opacity: 1;
 }
 
 .likes-dis {
   display: flex;
 }
 
-.upvote {
-  margin-right: 15px;
-}
-
 .upvote span {
   color: red;
-  font-weight: 400;
-  font-size: 20px;
-}
-
-.downvote span {
-  color: #eee;
   font-weight: 400;
   font-size: 20px;
 }
@@ -395,10 +390,6 @@ input.rsvp-val {
 
   .user span {
     display: none;
-  }
-
-  .dropdown-content {
-    left: auto;
   }
 
   form#question-submit {
